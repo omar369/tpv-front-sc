@@ -1,0 +1,125 @@
+---
+const pathname = Astro.url.pathname;
+
+const isProductosActive = pathname.startsWith('/productos');
+const isNuevoProductoActive = pathname === '/productos/nuevo';
+---
+
+<!-- Mobile Header Bar with Hamburger Toggle -->
+<div class="mobile-header">
+  <div style="display: flex; align-items: center; gap: 0.75rem;">
+    <button id="mobile-menu-toggle" type="button" aria-label="Abrir menú" style="background: transparent; border: none; color: var(--text-primary); font-size: 1.5rem; cursor: pointer; display: flex; align-items: center;">
+      ☰
+    </button>
+    <div class="sidebar__logo-icon" style="width: 30px; height: 30px; font-size: 0.85rem;">POS</div>
+    <span class="sidebar__title" style="font-size: 1rem;">Terminal POS</span>
+  </div>
+</div>
+
+<!-- Mobile Backdrop Overlay -->
+<div id="sidebar-overlay" class="sidebar-overlay"></div>
+
+<!-- Sidebar Navigation Component -->
+<aside id="app-sidebar" class="sidebar">
+  <div class="sidebar__header">
+    <div class="sidebar__logo-icon">POS</div>
+    <span class="sidebar__title">Terminal POS</span>
+  </div>
+
+  <nav class="sidebar__nav">
+    <div class="sidebar__section">
+      <div class="sidebar__section-label">General</div>
+      <a href="/" class={`sidebar__nav-item ${pathname === '/' ? 'active' : ''}`}>
+        <span class="sidebar__nav-item-icon">📊</span>
+        <span>Dashboard</span>
+      </a>
+    </div>
+
+    <div class="sidebar__section">
+      <div class="sidebar__section-label">Inventario</div>
+      <a href="/productos/nuevo" class={`sidebar__nav-item ${isProductosActive ? 'active' : ''}`}>
+        <span class="sidebar__nav-item-icon">📦</span>
+        <span>Productos</span>
+      </a>
+      
+      <div class="sidebar__subnav">
+        <a href="/productos/nuevo" class={`sidebar__subnav-item ${isNuevoProductoActive ? 'active' : ''}`}>
+          ➕ Subir nuevo producto
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- User Profile & Logout Section -->
+  <div style="padding: 1rem; border-top: 1px solid var(--border-color); background-color: var(--bg-primary);">
+    <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem;">
+      <div style="display: flex; flex-direction: column; overflow: hidden;">
+        <span id="user-display-name" style="font-weight: 600; font-size: 0.85rem; color: var(--text-primary); text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">
+          Admin POS
+        </span>
+        <span id="user-display-role" style="font-size: 0.75rem; color: var(--accent-color); font-weight: 500;">
+          Rol: Administrador
+        </span>
+      </div>
+      <button
+        id="btn-logout"
+        type="button"
+        title="Cerrar Sesión"
+        style="background: transparent; border: 1px solid var(--border-color); color: var(--text-secondary); padding: 0.35rem 0.6rem; border-radius: var(--radius-sm); cursor: pointer; font-size: 0.8rem; transition: background var(--transition-fast);"
+        onmouseover="this.style.backgroundColor='rgba(239,68,68,0.15)'; this.style.borderColor='#ef4444'; this.style.color='#fca5a5';"
+        onmouseout="this.style.backgroundColor='transparent'; this.style.borderColor='var(--border-color)'; this.style.color='var(--text-secondary)';"
+      >
+        🚪
+      </button>
+    </div>
+  </div>
+</aside>
+
+<script>
+  import { getLocalSession, logoutUser } from '../../lib/supabase';
+
+  // Mobile Drawer Toggle Logic
+  const toggleBtn = document.getElementById('mobile-menu-toggle');
+  const sidebar = document.getElementById('app-sidebar');
+  const overlay = document.getElementById('sidebar-overlay');
+
+  function openMenu() {
+    sidebar?.classList.add('open');
+    overlay?.classList.add('active');
+  }
+
+  function closeMenu() {
+    sidebar?.classList.remove('open');
+    overlay?.classList.remove('active');
+  }
+
+  toggleBtn?.addEventListener('click', () => {
+    if (sidebar?.classList.contains('open')) {
+      closeMenu();
+    } else {
+      openMenu();
+    }
+  });
+
+  overlay?.addEventListener('click', closeMenu);
+
+  // User session check
+  const session = getLocalSession();
+  const nameEl = document.getElementById('user-display-name');
+  const roleEl = document.getElementById('user-display-role');
+  const logoutBtn = document.getElementById('btn-logout');
+
+  if (session && session.user) {
+    if (nameEl) nameEl.textContent = session.user.user_metadata?.nombre || session.user.email || 'Admin POS';
+    if (roleEl) roleEl.textContent = `Rol: ${session.user.user_metadata?.rol || 'admin'}`;
+  } else {
+    if (window.location.pathname !== '/login') {
+      window.location.href = '/login';
+    }
+  }
+
+  logoutBtn?.addEventListener('click', async () => {
+    await logoutUser();
+    window.location.href = '/login';
+  });
+</script>

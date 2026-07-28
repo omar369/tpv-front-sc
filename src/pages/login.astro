@@ -1,0 +1,22 @@
+---
+import { pwaInfo } from 'virtual:pwa-info';
+import { LoginForm } from '../components/auth/LoginForm';
+import '../styles/global.css';
+import '../styles/productos.css';
+---
+
+<html lang="es">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <title>Acceso — Terminal POS</title>
+    { pwaInfo && <Fragment set:html={pwaInfo.webManifest.linkTag} /> }
+  </head>
+  <body style="background-color: var(--bg-primary); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 1rem;">
+    <main style="width: 100%;">
+      <LoginForm client:load />
+    </main>
+    <script src="/src/pwa.ts"></script>
+  </body>
+</html>

@@ -1,17 +1,38 @@
 ---
-
+import Layout from '../layouts/Layout.astro';
+import StatsCard from '../components/dashboard/StatsCard.astro';
+import QuickActions from '../components/dashboard/QuickActions.astro';
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Layout title="Dashboard — Terminal POS">
+	<h1 class="page-title">Dashboard Principal</h1>
+	<p class="page-subtitle">Bienvenido a la Terminal Punto de Venta PWA</p>
+
+	<!-- Grid de Métricas del Dashboard -->
+	<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.25rem;">
+		<StatsCard
+			title="Ventas de Hoy"
+			value="$0.00"
+			subtitle="0 transacciones registradas"
+			icon="💳"
+			color="#10b981"
+		/>
+		<StatsCard
+			title="Productos en Catálogo"
+			value="--"
+			subtitle="Conectado con Supabase DB"
+			icon="📦"
+			color="#6366f1"
+		/>
+		<StatsCard
+			title="Estado de API"
+			value="Activa"
+			subtitle="FastAPI backend responde OK"
+			icon="⚡"
+			color="#f59e0b"
+		/>
+	</div>
+
+	<!-- Acciones Rápidas -->
+	<QuickActions />
+</Layout>

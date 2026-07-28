@@ -1,0 +1,12 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { BuscadorProductos } from '../../components/productos/BuscadorProductos';
+import '../../styles/productos.css';
+---
+
+<Layout title="Subir Producto — Terminal POS">
+	<h1 class="page-title">Gestión de Productos</h1>
+	<p class="page-subtitle">Busca productos existentes o registra nuevos productos en el catálogo</p>
+
+	<BuscadorProductos client:load />
+</Layout>

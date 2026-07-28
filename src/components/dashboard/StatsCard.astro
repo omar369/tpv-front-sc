@@ -1,0 +1,73 @@
+---
+export interface Props {
+  title: string;
+  value: string;
+  subtitle: string;
+  icon: string;
+  color?: string;
+}
+
+const { title, value, subtitle, icon, color = 'var(--accent-color)' } = Astro.props;
+---
+
+<div class="stats-card">
+  <div class="stats-card__header">
+    <span class="stats-card__title">{title}</span>
+    <div class="stats-card__icon" style={`background-color: ${color}20; color: ${color};`}>
+      {icon}
+    </div>
+  </div>
+  <div class="stats-card__value">{value}</div>
+  <div class="stats-card__subtitle">{subtitle}</div>
+</div>
+
+<style>
+  .stats-card {
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    transition: transform var(--transition-fast), border-color var(--transition-fast);
+  }
+
+  .stats-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--border-focus);
+  }
+
+  .stats-card__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .stats-card__title {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+  }
+
+  .stats-card__icon {
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+  }
+
+  .stats-card__value {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+
+  .stats-card__subtitle {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+  }
+</style>
