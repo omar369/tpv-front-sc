@@ -6,9 +6,10 @@ interface Props {
   onBack: () => void;
   onSuccess: (newProd: Producto) => void;
   existingClaves: string[];
+  apiUrl?: string;
 }
 
-export const FormProducto: React.FC<Props> = ({ onBack, onSuccess, existingClaves }) => {
+export const FormProducto: React.FC<Props> = ({ onBack, onSuccess, existingClaves, apiUrl = 'http://localhost:8000' }) => {
   const [clave, setClave] = useState('');
   const [claveExterna, setClaveExterna] = useState('');
   const [nombre, setNombre] = useState('');
@@ -84,7 +85,7 @@ export const FormProducto: React.FC<Props> = ({ onBack, onSuccess, existingClave
         formData.append('imagen', imagenFile);
       }
 
-      const response = await createProducto(formData);
+      const response = await createProducto(formData, apiUrl);
       const created = Array.isArray(response) ? response[0] : response;
       onSuccess(created);
     } catch (err: any) {

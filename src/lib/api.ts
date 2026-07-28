@@ -1,6 +1,7 @@
 import type { Producto } from '../types/productos';
 
-const API_BASE = import.meta.env.PUBLIC_API_URL || 'http://localhost:8000';
+// Default fallback — only used in local dev or if prop is not passed
+export const DEFAULT_API_BASE = import.meta.env.PUBLIC_API_URL || 'http://localhost:8000';
 
 function getAuthHeaders(): HeadersInit {
   if (typeof window === 'undefined') return {};
@@ -11,8 +12,8 @@ function getAuthHeaders(): HeadersInit {
   };
 }
 
-export async function getProductos(): Promise<Producto[]> {
-  const res = await fetch(`${API_BASE}/productos/`, {
+export async function getProductos(baseUrl: string = DEFAULT_API_BASE): Promise<Producto[]> {
+  const res = await fetch(`${baseUrl}/productos/`, {
     headers: getAuthHeaders(),
   });
   if (!res.ok) {
@@ -21,9 +22,9 @@ export async function getProductos(): Promise<Producto[]> {
   return await res.json();
 }
 
-export async function createProducto(formData: FormData): Promise<Producto[]> {
+export async function createProducto(formData: FormData, baseUrl: string = DEFAULT_API_BASE): Promise<Producto[]> {
   const headers = getAuthHeaders();
-  const res = await fetch(`${API_BASE}/productos/`, {
+  const res = await fetch(`${baseUrl}/productos/`, {
     method: 'POST',
     headers: headers,
     body: formData,
@@ -36,8 +37,8 @@ export async function createProducto(formData: FormData): Promise<Producto[]> {
   return await res.json();
 }
 
-export async function deleteProducto(id: number): Promise<void> {
-  const res = await fetch(`${API_BASE}/productos/${id}`, {
+export async function deleteProducto(id: number, baseUrl: string = DEFAULT_API_BASE): Promise<void> {
+  const res = await fetch(`${baseUrl}/productos/${id}`, {
     method: 'DELETE',
     headers: getAuthHeaders(),
   });

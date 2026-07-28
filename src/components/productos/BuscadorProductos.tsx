@@ -4,7 +4,11 @@ import type { Producto } from '../../types/productos';
 import { ProductoCard } from './ProductoCard';
 import { FormProducto } from './FormProducto';
 
-export const BuscadorProductos: React.FC = () => {
+interface BuscadorProductosProps {
+  apiUrl?: string;
+}
+
+export const BuscadorProductos: React.FC<BuscadorProductosProps> = ({ apiUrl = 'http://localhost:8000' }) => {
   const [productos, setProductos] = useState<Producto[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(true);
@@ -16,11 +20,10 @@ export const BuscadorProductos: React.FC = () => {
     setLoading(true);
     setError(null);
     try {
-      const data = await getProductos();
+      const data = await getProductos(apiUrl);
       setProductos(data);
     } catch (err: any) {
-      const apiTarget = import.meta.env.PUBLIC_API_URL || 'http://localhost:8000';
-      setError(`No se pudo conectar con la API (${apiTarget}). Detalle: ${err.message || 'Error de conexión / CORS'}`);
+      setError(`No se pudo conectar con la API (${apiUrl}). Detalle: ${err.message || 'Error de conexión / CORS'}`);
     } finally {
       setLoading(false);
     }
@@ -66,6 +69,7 @@ export const BuscadorProductos: React.FC = () => {
         onBack={() => setMode('search')}
         onSuccess={handleProductCreated}
         existingClaves={existingClaves}
+        apiUrl={apiUrl}
       />
     );
   }
