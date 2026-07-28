@@ -19,7 +19,8 @@ export const BuscadorProductos: React.FC = () => {
       const data = await getProductos();
       setProductos(data);
     } catch (err: any) {
-      setError('No se pudo conectar con la API de productos. Verifica que esté corriendo en http://localhost:8000.');
+      const apiTarget = import.meta.env.PUBLIC_API_URL || 'http://localhost:8000';
+      setError(`No se pudo conectar con la API (${apiTarget}). Detalle: ${err.message || 'Error de conexión / CORS'}`);
     } finally {
       setLoading(false);
     }
