@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { supabase, HARDCODED_ADMIN_EMAIL, HARDCODED_ADMIN_PASSWORD, loginAdminDefault } from '../../lib/supabase';
+import { loginWithCredentials } from '../../services/auth';
 
 export const LoginForm: React.FC = () => {
-  const [email, setEmail] = useState(HARDCODED_ADMIN_EMAIL);
-  const [password, setPassword] = useState(HARDCODED_ADMIN_PASSWORD);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -13,42 +13,13 @@ export const LoginForm: React.FC = () => {
     setLoading(true);
 
     try {
-      if (email === HARDCODED_ADMIN_EMAIL && password === HARDCODED_ADMIN_PASSWORD) {
-        await loginAdminDefault();
-        window.location.href = '/';
-        return;
-      }
-
-      const { data, error: authErr } = await supabase.auth.signInWithPassword({
-        email: email.trim(),
-        password: password.trim(),
-      });
-
-      if (authErr) {
-        setError(authErr.message || 'Credenciales de acceso incorrectas');
-        setLoading(false);
-        return;
-      }
-
-      if (data.session) {
-        localStorage.setItem('pos_token', data.session.access_token);
-        localStorage.setItem('pos_user', JSON.stringify(data.user));
-        window.location.href = '/';
-      }
+      await loginWithCredentials(email, password);
+      window.location.href = '/';
     } catch (err: any) {
       setError(err.message || 'Error durante el inicio de sesión.');
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleQuickAdminLogin = async () => {
-    setEmail(HARDCODED_ADMIN_EMAIL);
-    setPassword(HARDCODED_ADMIN_PASSWORD);
-    setLoading(true);
-    setError(null);
-    await loginAdminDefault();
-    window.location.href = '/';
   };
 
   return (
@@ -135,29 +106,7 @@ export const LoginForm: React.FC = () => {
         >
           {loading ? 'Verificando...' : '🔓 Iniciar Sesión'}
         </button>
-
-        <button
-          type="button"
-          onClick={handleQuickAdminLogin}
-          className="btn-secondary"
-          style={{ width: '100%', justifyContent: 'center', padding: '0.75rem', fontSize: '0.85rem' }}
-          disabled={loading}
-        >
-          ⚡ Acceso Rápido Administrador
-        </button>
       </form>
-
-      <div style={{
-        marginTop: '2rem',
-        paddingTop: '1.25rem',
-        borderTop: '1px solid var(--border-color)',
-        fontSize: '0.78rem',
-        color: 'var(--text-muted)',
-        textAlign: 'center'
-      }}>
-        Credenciales Admin preconfiguradas:<br />
-        <code style={{ color: 'var(--accent-color)', fontWeight: '600' }}>admin@pos.com</code> / <code style={{ color: 'var(--accent-color)', fontWeight: '600' }}>adminpassword123</code>
-      </div>
     </div>
   );
 };

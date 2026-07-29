@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { createProducto } from '../../lib/api';
-import type { Producto } from '../../types/productos';
+import { createProducto } from '../../services/productos';
+import type { Producto } from '../../types';
 
 interface Props {
   onBack: () => void;

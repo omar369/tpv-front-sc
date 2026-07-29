@@ -76,7 +76,7 @@ const isNuevoProductoActive = pathname === '/productos/nuevo';
 </aside>
 
 <script>
-  import { getLocalSession, logoutUser } from '../../lib/supabase';
+  import { getLocalSession, logoutUser } from '../../services/auth';
 
   // Mobile Drawer Toggle Logic
   const toggleBtn = document.getElementById('mobile-menu-toggle');

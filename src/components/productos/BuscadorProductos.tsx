@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { getProductos } from '../../lib/api';
-import type { Producto } from '../../types/productos';
+import { getProductos } from '../../services/productos';
+import type { Producto } from '../../types';
 import { ProductoCard } from './ProductoCard';
 import { FormProducto } from './FormProducto';
 
