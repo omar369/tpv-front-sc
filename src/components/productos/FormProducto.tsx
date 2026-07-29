@@ -44,7 +44,6 @@ export const FormProducto: React.FC<Props> = ({ onBack, onSuccess, existingClave
     e.preventDefault();
     setError(null);
 
-    // Validation
     if (!clave.trim()) {
       setError('La clave del producto es obligatoria.');
       return;
@@ -96,44 +95,44 @@ export const FormProducto: React.FC<Props> = ({ onBack, onSuccess, existingClave
   };
 
   return (
-    <div class="phase-card">
-      <div class="phase-header">
-        <div class="phase-title-group">
-          <h3 class="phase-title">Crear Nuevo Producto</h3>
-          <p class="phase-desc">Completa los campos detallados para registrar el producto en el catálogo</p>
+    <div className="phase-card">
+      <div className="phase-header">
+        <div className="phase-title-group">
+          <h3 className="phase-title">Crear Nuevo Producto</h3>
+          <p className="phase-desc">Completa los campos detallados para registrar el producto en el catálogo</p>
         </div>
-        <button type="button" onClick={onBack} class="btn-secondary">
+        <button type="button" onClick={onBack} className="btn-secondary">
           ← Volver a Búsqueda
         </button>
       </div>
 
       {error && (
-        <div class="duplicate-alert" style={{ backgroundColor: 'rgba(239, 68, 68, 0.15)', borderColor: '#ef4444', color: '#fca5a5' }}>
-          <span class="duplicate-alert-icon">⚠️</span>
+        <div className="duplicate-alert" style={{ backgroundColor: 'rgba(239, 68, 68, 0.15)', borderColor: '#ef4444', color: '#fca5a5' }}>
+          <span className="duplicate-alert-icon">⚠️</span>
           <div>{error}</div>
         </div>
       )}
 
-      <form onSubmit={handleSubmit} class="form-grid">
-        <div class="form-fields">
+      <form onSubmit={handleSubmit} className="form-grid">
+        <div className="form-fields">
           {/* Fila 1: Claves */}
-          <div class="form-row">
-            <div class="field-group">
+          <div className="form-row">
+            <div className="field-group">
               <label>Clave / SKU Interno <span>*</span></label>
               <input
                 type="text"
-                class="field-input"
+                className="field-input"
                 placeholder="Ej. ART-001"
                 value={clave}
                 onChange={(e) => setClave(e.target.value)}
                 required
               />
             </div>
-            <div class="field-group">
+            <div className="field-group">
               <label>Clave Externa / Código de Barras</label>
               <input
                 type="text"
-                class="field-input"
+                className="field-input"
                 placeholder="Ej. 7501000123456"
                 value={claveExterna}
                 onChange={(e) => setClaveExterna(e.target.value)}
@@ -142,11 +141,11 @@ export const FormProducto: React.FC<Props> = ({ onBack, onSuccess, existingClave
           </div>
 
           {/* Fila 2: Nombre, Marca, Modelo */}
-          <div class="field-group">
+          <div className="field-group">
             <label>Nombre del Producto <span>*</span></label>
             <input
               type="text"
-              class="field-input"
+              className="field-input"
               placeholder="Ej. Coca Cola 600ml Desechable"
               value={nombre}
               onChange={(e) => setNombre(e.target.value)}
@@ -154,22 +153,22 @@ export const FormProducto: React.FC<Props> = ({ onBack, onSuccess, existingClave
             />
           </div>
 
-          <div class="form-row">
-            <div class="field-group">
+          <div className="form-row">
+            <div className="field-group">
               <label>Marca</label>
               <input
                 type="text"
-                class="field-input"
+                className="field-input"
                 placeholder="Ej. Coca Cola, Samsung"
                 value={marca}
                 onChange={(e) => setMarca(e.target.value)}
               />
             </div>
-            <div class="field-group">
+            <div className="field-group">
               <label>Modelo / Presentación</label>
               <input
                 type="text"
-                class="field-input"
+                className="field-input"
                 placeholder="Ej. 600ml, XL, V8"
                 value={modelo}
                 onChange={(e) => setModelo(e.target.value)}
@@ -178,27 +177,27 @@ export const FormProducto: React.FC<Props> = ({ onBack, onSuccess, existingClave
           </div>
 
           {/* Fila 3: Precios */}
-          <div class="form-row">
-            <div class="field-group">
+          <div className="form-row">
+            <div className="field-group">
               <label>Precio al Público ($) <span>*</span></label>
               <input
                 type="number"
                 step="0.01"
                 min="0"
-                class="field-input"
+                className="field-input"
                 placeholder="0.00"
                 value={precio}
                 onChange={(e) => setPrecio(e.target.value)}
                 required
               />
             </div>
-            <div class="field-group">
+            <div className="field-group">
               <label>Precio Mínimo Permitido ($)</label>
               <input
                 type="number"
                 step="0.01"
                 min="0"
-                class="field-input"
+                className="field-input"
                 placeholder="0.00"
                 value={precioMinimo}
                 onChange={(e) => setPrecioMinimo(e.target.value)}
@@ -207,11 +206,11 @@ export const FormProducto: React.FC<Props> = ({ onBack, onSuccess, existingClave
           </div>
 
           {/* Fila 4: Unidad de medida y Cantidad */}
-          <div class="form-row">
-            <div class="field-group">
+          <div className="form-row">
+            <div className="field-group">
               <label>Unidad de Medida</label>
               <select
-                class="field-select"
+                className="field-select"
                 value={unidadMedida}
                 onChange={(e) => setUnidadMedida(e.target.value)}
               >
@@ -224,13 +223,13 @@ export const FormProducto: React.FC<Props> = ({ onBack, onSuccess, existingClave
                 <option value="paq">Paquete</option>
               </select>
             </div>
-            <div class="field-group">
+            <div className="field-group">
               <label>Cantidad de la Unidad</label>
               <input
                 type="number"
                 step="0.001"
                 min="0.001"
-                class="field-input"
+                className="field-input"
                 placeholder="Ej. 600, 1.5, 1"
                 value={cantidadUnidadMedida}
                 onChange={(e) => setCantidadUnidadMedida(e.target.value)}
@@ -239,51 +238,51 @@ export const FormProducto: React.FC<Props> = ({ onBack, onSuccess, existingClave
           </div>
 
           {/* Fila 5: Stock */}
-          <div class="form-row">
-            <div class="field-group">
+          <div className="form-row">
+            <div className="field-group">
               <label>Stock Inicial</label>
               <input
                 type="number"
                 min="0"
-                class="field-input"
+                className="field-input"
                 value={stockActual}
                 onChange={(e) => setStockActual(e.target.value)}
               />
             </div>
-            <div class="field-group">
+            <div className="field-group">
               <label>Stock Mínimo Alerta</label>
               <input
                 type="number"
                 min="0"
-                class="field-input"
+                className="field-input"
                 value={stockMinimo}
                 onChange={(e) => setStockMinimo(e.target.value)}
               />
             </div>
           </div>
 
-          <div class="field-group">
+          <div className="field-group">
             <label>Descripción</label>
             <textarea
-              class="field-textarea"
+              className="field-textarea"
               placeholder="Detalles opcionales del producto..."
               value={descripcion}
               onChange={(e) => setDescripcion(e.target.value)}
             />
           </div>
 
-          <div class="form-row">
-            <div class="field-group">
+          <div className="form-row">
+            <div className="field-group">
               <label>ID Categoría (Opcional)</label>
               <input
                 type="number"
-                class="field-input"
+                className="field-input"
                 placeholder="Ej. 1"
                 value={categoriaId}
                 onChange={(e) => setCategoriaId(e.target.value)}
               />
             </div>
-            <div class="field-group">
+            <div className="field-group">
               <label>Estado</label>
               <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', marginTop: '0.5rem' }}>
                 <input
@@ -298,9 +297,9 @@ export const FormProducto: React.FC<Props> = ({ onBack, onSuccess, existingClave
         </div>
 
         <div>
-          <div class="field-group">
+          <div className="field-group">
             <label>Imagen del Producto</label>
-            <label class="image-dropzone">
+            <label className="image-dropzone">
               <input
                 type="file"
                 accept="image/*"
@@ -308,12 +307,12 @@ export const FormProducto: React.FC<Props> = ({ onBack, onSuccess, existingClave
                 style={{ display: 'none' }}
               />
               {previewUrl ? (
-                <img src={previewUrl} alt="Preview" class="dropzone-preview" />
+                <img src={previewUrl} alt="Preview" className="dropzone-preview" />
               ) : (
                 <>
                   <span style={{ fontSize: '2rem' }}>🖼️</span>
-                  <span class="dropzone-text">Haz clic o arrastra una imagen aquí</span>
-                  <span class="dropzone-hint">Soporta PNG, JPG o WEBP</span>
+                  <span className="dropzone-text">Haz clic o arrastra una imagen aquí</span>
+                  <span className="dropzone-hint">Soporta PNG, JPG o WEBP</span>
                 </>
               )}
             </label>
@@ -321,11 +320,11 @@ export const FormProducto: React.FC<Props> = ({ onBack, onSuccess, existingClave
         </div>
       </form>
 
-      <div class="form-actions">
-        <button type="button" onClick={onBack} class="btn-secondary" disabled={loading}>
+      <div className="form-actions">
+        <button type="button" onClick={onBack} className="btn-secondary" disabled={loading}>
           Cancelar
         </button>
-        <button type="button" onClick={handleSubmit} class="btn-primary" disabled={loading}>
+        <button type="button" onClick={handleSubmit} className="btn-primary" disabled={loading}>
           {loading ? 'Subiendo Producto...' : '💾 Guardar Producto'}
         </button>
       </div>

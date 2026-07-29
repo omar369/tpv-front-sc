@@ -33,7 +33,6 @@ export const BuscadorProductos: React.FC<BuscadorProductosProps> = ({ apiUrl = '
     fetchProductosList();
   }, []);
 
-  // Filtered products list based on search term
   const filteredProductos = useMemo(() => {
     if (!searchTerm.trim()) return productos;
     const term = searchTerm.toLowerCase().trim();
@@ -42,7 +41,6 @@ export const BuscadorProductos: React.FC<BuscadorProductosProps> = ({ apiUrl = '
     );
   }, [productos, searchTerm]);
 
-  // Exact match detection for duplicate warning
   const duplicateMatch = useMemo(() => {
     if (!searchTerm.trim()) return null;
     const term = searchTerm.toLowerCase().trim();
@@ -75,34 +73,34 @@ export const BuscadorProductos: React.FC<BuscadorProductosProps> = ({ apiUrl = '
   }
 
   return (
-    <div class="productos-container">
+    <div className="productos-container">
       {successMessage && (
-        <div class="duplicate-alert" style={{ backgroundColor: 'rgba(16, 185, 129, 0.15)', borderColor: '#10b981', color: '#6ee7b7' }}>
-          <span class="duplicate-alert-icon">✅</span>
+        <div className="duplicate-alert" style={{ backgroundColor: 'rgba(16, 185, 129, 0.15)', borderColor: '#10b981', color: '#6ee7b7' }}>
+          <span className="duplicate-alert-icon">✅</span>
           <div>{successMessage}</div>
         </div>
       )}
 
-      <div class="phase-card">
-        <div class="phase-header">
-          <div class="phase-title-group">
-            <h3 class="phase-title">Paso 1: Buscar Producto Existente</h3>
-            <p class="phase-desc">Ingresa el nombre o clave del producto antes de agregarlo para evitar duplicados en la base de datos</p>
+      <div className="phase-card">
+        <div className="phase-header">
+          <div className="phase-title-group">
+            <h3 className="phase-title">Paso 1: Buscar Producto Existente</h3>
+            <p className="phase-desc">Ingresa el nombre o clave del producto antes de agregarlo para evitar duplicados en la base de datos</p>
           </div>
           <button
             type="button"
             onClick={() => setMode('create')}
-            class="btn-primary"
+            className="btn-primary"
           >
             ➕ Subir Nuevo Producto
           </button>
         </div>
 
-        <div class="search-wrapper">
-          <span class="search-icon">🔍</span>
+        <div className="search-wrapper">
+          <span className="search-icon">🔍</span>
           <input
             type="text"
-            class="search-input"
+            className="search-input"
             placeholder="Buscar por nombre o clave SKU..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
@@ -110,8 +108,8 @@ export const BuscadorProductos: React.FC<BuscadorProductosProps> = ({ apiUrl = '
         </div>
 
         {duplicateMatch && (
-          <div class="duplicate-alert">
-            <span class="duplicate-alert-icon">⚠️</span>
+          <div className="duplicate-alert">
+            <span className="duplicate-alert-icon">⚠️</span>
             <div>
               <strong>¡Producto ya registrado!</strong> Se encontró un producto coincidente:{' '}
               <em>"{duplicateMatch.nombre}"</em> con clave <code>#{duplicateMatch.clave}</code>. Evita volver a subirlo.
@@ -124,8 +122,8 @@ export const BuscadorProductos: React.FC<BuscadorProductosProps> = ({ apiUrl = '
             Cargando catálogo de productos...
           </div>
         ) : error ? (
-          <div class="duplicate-alert" style={{ backgroundColor: 'rgba(239, 68, 68, 0.15)', borderColor: '#ef4444', color: '#fca5a5' }}>
-            <span class="duplicate-alert-icon">❌</span>
+          <div className="duplicate-alert" style={{ backgroundColor: 'rgba(239, 68, 68, 0.15)', borderColor: '#ef4444', color: '#fca5a5' }}>
+            <span className="duplicate-alert-icon">❌</span>
             <div>{error}</div>
           </div>
         ) : filteredProductos.length === 0 ? (
@@ -138,7 +136,7 @@ export const BuscadorProductos: React.FC<BuscadorProductosProps> = ({ apiUrl = '
             <button
               type="button"
               onClick={() => setMode('create')}
-              class="btn-primary"
+              className="btn-primary"
             >
               ➕ Crear "{searchTerm || 'Nuevo Producto'}"
             </button>
@@ -148,7 +146,7 @@ export const BuscadorProductos: React.FC<BuscadorProductosProps> = ({ apiUrl = '
             <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '0.75rem' }}>
               Mostrando {filteredProductos.length} producto(s) encontrado(s)
             </div>
-            <div class="results-grid">
+            <div className="results-grid">
               {filteredProductos.map((p) => (
                 <ProductoCard key={p.id} producto={p} />
               ))}
