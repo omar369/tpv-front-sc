@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
 import { loginWithCredentials } from '../../services/auth';
 
-export const LoginForm: React.FC = () => {
+interface LoginFormProps {
+  supabaseUrl?: string;
+  supabaseAnonKey?: string;
+}
+
+export const LoginForm: React.FC<LoginFormProps> = ({ supabaseUrl, supabaseAnonKey }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -13,7 +18,7 @@ export const LoginForm: React.FC = () => {
     setLoading(true);
 
     try {
-      await loginWithCredentials(email, password);
+      await loginWithCredentials(email, password, supabaseUrl, supabaseAnonKey);
       window.location.href = '/';
     } catch (err: any) {
       setError(err.message || 'Error durante el inicio de sesión.');

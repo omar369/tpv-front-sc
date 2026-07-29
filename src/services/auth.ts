@@ -1,17 +1,30 @@
-import { createClient } from '@supabase/supabase-js';
+import { createClient, type SupabaseClient } from '@supabase/supabase-js';
 
-const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL || 'https://obabigruajliljzympth.supabase.co';
-const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || 'placeholder';
+const defaultUrl = import.meta.env.PUBLIC_SUPABASE_URL || 'https://obabigruajliljzympth.supabase.co';
+const defaultAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+let clientInstance: SupabaseClient | null = null;
+
+export function getSupabaseClient(url?: string, anonKey?: string): SupabaseClient {
+  const targetUrl = url || defaultUrl;
+  const targetKey = anonKey || defaultAnonKey;
+
+  if (!clientInstance) {
+    clientInstance = createClient(targetUrl, targetKey);
+  }
+  return clientInstance;
+}
+
+export const supabase = getSupabaseClient();
 
 export interface UserSession {
   token: string;
   user: any;
 }
 
-export async function loginWithCredentials(email: string, pass: string): Promise<UserSession> {
-  const { data, error } = await supabase.auth.signInWithPassword({
+export async function loginWithCredentials(email: string, pass: string, customUrl?: string, customKey?: string): Promise<UserSession> {
+  const client = getSupabaseClient(customUrl, customKey);
+  const { data, error } = await client.auth.signInWithPassword({
     email: email.trim(),
     password: pass.trim(),
   });
@@ -47,7 +60,8 @@ export function getLocalSession(): UserSession | null {
 
 export async function logoutUser(): Promise<void> {
   try {
-    await supabase.auth.signOut();
+    const client = getSupabaseClient();
+    await client.auth.signOut();
   } catch {
     // Ignore signout errors
   }
