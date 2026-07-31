@@ -4,24 +4,21 @@ import type { Producto } from '../../types';
 import { ProductoCard } from './ProductoCard';
 import { FormProducto } from './FormProducto';
 
-// Categorías estáticas — filtran por coincidencia en nombre/descripción.
-// TODO: conectar a endpoint de categorías cuando esté disponible en la API.
-const CATEGORIES = [
-  'Todos',
-  'Pintura',
-  'Impermeabilizante',
-  'Esmaltes',
-  'Selladores',
-  'Rodillos',
-  'Brochas',
-];
-
-// Íconos para los accesos rápidos superiores
+// Accesos rápidos superiores — íconos funcionales (logo puede personalizarse)
 const QUICK_ACTIONS = [
-  { icon: '📦', label: 'Productos' },
-  { icon: '🔧', label: 'Servicios' },
-  { icon: '🎧', label: 'Soporte' },
-];
+  {
+    icon: '📦',
+    label: 'Productos',
+    href: '/productos/nuevo',
+    key: 'productos',
+  },
+  {
+    icon: '📊',
+    label: 'Dashboard',
+    href: '/',
+    key: 'dashboard',
+  },
+] as const;
 
 interface BuscadorProductosProps {
   apiUrl?: string;
@@ -32,7 +29,6 @@ export const BuscadorProductos: React.FC<BuscadorProductosProps> = ({
 }) => {
   const [productos, setProductos]           = useState<Producto[]>([]);
   const [searchTerm, setSearchTerm]         = useState('');
-  const [activeCategory, setActiveCategory] = useState('Todos');
   const [loading, setLoading]               = useState(true);
   const [error, setError]                   = useState<string | null>(null);
   const [mode, setMode]                     = useState<'search' | 'create'>('search');
@@ -59,7 +55,7 @@ export const BuscadorProductos: React.FC<BuscadorProductosProps> = ({
   }, []);
 
   // ── Filtrado por texto de búsqueda ──
-  const filteredBySearch = useMemo(() => {
+  const filteredProductos = useMemo(() => {
     if (!searchTerm.trim()) return productos;
     const term = searchTerm.toLowerCase().trim();
     return productos.filter(
@@ -70,24 +66,12 @@ export const BuscadorProductos: React.FC<BuscadorProductosProps> = ({
     );
   }, [productos, searchTerm]);
 
-  // ── Filtrado por categoría ──
-  const filteredProductos = useMemo(() => {
-    if (activeCategory === 'Todos') return filteredBySearch;
-    const cat = activeCategory.toLowerCase();
-    return filteredBySearch.filter(
-      (p) =>
-        p.nombre.toLowerCase().includes(cat) ||
-        (p.descripcion?.toLowerCase().includes(cat) ?? false),
-    );
-  }, [filteredBySearch, activeCategory]);
-
   // ── Detección de duplicado exacto ──
   const duplicateMatch = useMemo(() => {
     if (!searchTerm.trim()) return null;
     const term = searchTerm.toLowerCase().trim();
     return productos.find(
-      (p) =>
-        p.clave.toLowerCase() === term || p.nombre.toLowerCase() === term,
+      (p) => p.clave.toLowerCase() === term || p.nombre.toLowerCase() === term,
     );
   }, [productos, searchTerm]);
 
@@ -116,24 +100,34 @@ export const BuscadorProductos: React.FC<BuscadorProductosProps> = ({
     );
   }
 
-  // ── Vista: Buscador + catálogo ──
+  // ── Vista principal: Buscador + catálogo ──
   return (
     <div className="productos-root">
 
-      {/* Accesos rápidos de sección */}
-      <div className="productos-quick-actions">
+      {/* Botones de acceso rápido a secciones */}
+      <nav className="productos-quick-actions" aria-label="Accesos rápidos">
         {QUICK_ACTIONS.map((action) => (
-          <button
-            key={action.label}
-            type="button"
-            className="quick-action-item"
+          <a
+            key={action.key}
+            href={action.href}
+            className="quick-action-btn"
             title={action.label}
           >
-            <span className="quick-action-icon">{action.icon}</span>
-            <span className="quick-action-label">{action.label}</span>
-          </button>
+            <span className="quick-action-btn-icon">{action.icon}</span>
+            <span className="quick-action-btn-label">{action.label}</span>
+          </a>
         ))}
-      </div>
+        {/* Botón de nuevo producto */}
+        <button
+          type="button"
+          className="quick-action-btn"
+          title="Subir Producto"
+          onClick={() => setMode('create')}
+        >
+          <span className="quick-action-btn-icon">➕</span>
+          <span className="quick-action-btn-label">Nuevo</span>
+        </button>
+      </nav>
 
       {/* Barra de búsqueda pill */}
       <div className="search-bar-wrapper">
@@ -161,85 +155,56 @@ export const BuscadorProductos: React.FC<BuscadorProductosProps> = ({
           <span className="duplicate-warning-icon">⚠️</span>
           <div>
             <strong>¡Producto ya registrado!</strong> Se encontró:{' '}
-            <em>"{duplicateMatch.nombre}"</em> (clave: <code>#{duplicateMatch.clave}</code>)
+            <em>"{duplicateMatch.nombre}"</em> (clave:{' '}
+            <code>#{duplicateMatch.clave}</code>)
           </div>
         </div>
       )}
 
-      {/* Layout: panel de categorías + grid de productos */}
-      <div className="productos-layout">
-
-        {/* Panel izquierdo de categorías */}
-        <aside className="categorias-panel">
-          {CATEGORIES.map((cat) => (
-            <button
-              key={cat}
-              type="button"
-              className={`categoria-item ${activeCategory === cat ? 'categoria-item--active' : ''}`}
-              onClick={() => setActiveCategory(cat)}
-            >
-              {cat.toUpperCase()}
-            </button>
-          ))}
-        </aside>
-
-        {/* Área principal: grid de productos */}
-        <section>
-          {loading ? (
-            <div className="loading-state">
-              <span>Cargando catálogo...</span>
-            </div>
-          ) : error ? (
-            <div className="alert-banner alert-banner--danger">
-              <span>❌</span>
-              <span>{error}</span>
-            </div>
-          ) : filteredProductos.length === 0 ? (
-            <div className="empty-state">
-              <span style={{ fontSize: '2rem' }}>📭</span>
-              <span className="empty-state-title">
-                {searchTerm
-                  ? `Sin resultados para "${searchTerm}"`
-                  : 'No hay productos aún'}
-              </span>
-              <span className="empty-state-desc">
-                {searchTerm
-                  ? 'Prueba con otro término o crea el producto nuevo.'
-                  : 'Agrega tu primer producto al catálogo.'}
-              </span>
-              <button
-                type="button"
-                className="btn-primary"
-                onClick={() => setMode('create')}
-              >
-                ➕ {searchTerm ? `Crear "${searchTerm}"` : 'Nuevo Producto'}
-              </button>
-            </div>
-          ) : (
-            <>
-              <p className="productos-count">
-                {filteredProductos.length} producto{filteredProductos.length !== 1 ? 's' : ''}
-              </p>
-              <div className="productos-grid">
-                {filteredProductos.map((p) => (
-                  <ProductoCard key={p.id} producto={p} />
-                ))}
-              </div>
-            </>
-          )}
-        </section>
-      </div>
-
-      {/* Botón para agregar producto */}
-      <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-        <button
-          type="button"
-          className="btn-primary"
-          onClick={() => setMode('create')}
-        >
-          ➕ Subir nuevo producto
-        </button>
-      </div>
+      {/* Grid de productos — ancho completo, sin panel de categorías */}
+      {loading ? (
+        <div className="loading-state">
+          <span>Cargando catálogo...</span>
+        </div>
+      ) : error ? (
+        <div className="alert-banner alert-banner--danger">
+          <span>❌</span>
+          <span>{error}</span>
+        </div>
+      ) : filteredProductos.length === 0 ? (
+        <div className="empty-state">
+          <span style={{ fontSize: '2rem' }}>📭</span>
+          <span className="empty-state-title">
+            {searchTerm
+              ? `Sin resultados para "${searchTerm}"`
+              : 'No hay productos aún'}
+          </span>
+          <span className="empty-state-desc">
+            {searchTerm
+              ? 'Prueba con otro término o crea el producto nuevo.'
+              : 'Agrega tu primer producto al catálogo.'}
+          </span>
+          <button
+            type="button"
+            className="btn-primary"
+            onClick={() => setMode('create')}
+          >
+            ➕ {searchTerm ? `Crear "${searchTerm}"` : 'Nuevo Producto'}
+          </button>
+        </div>
+      ) : (
+        <>
+          <p className="productos-count">
+            {filteredProductos.length} producto
+            {filteredProductos.length !== 1 ? 's' : ''}
+          </p>
+          <div className="productos-grid">
+            {filteredProductos.map((p) => (
+              <ProductoCard key={p.id} producto={p} />
+            ))}
+          </div>
+        </>
+      )}
     </div>
   );
 };
