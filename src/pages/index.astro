@@ -2,37 +2,39 @@
 import Layout from '../layouts/Layout.astro';
 import StatsCard from '../components/dashboard/StatsCard.astro';
 import QuickActions from '../components/dashboard/QuickActions.astro';
+import '../styles/dashboard.css';
 ---
 
 <Layout title="Dashboard — Terminal POS">
-	<h1 class="page-title">Dashboard Principal</h1>
-	<p class="page-subtitle">Bienvenido a la Terminal Punto de Venta PWA</p>
+  <div class="dashboard-container">
+    <div class="dashboard-header">
+      <h1 class="page-title">Dashboard Principal</h1>
+      <p class="page-subtitle">Bienvenido a la Terminal Punto de Venta PWA</p>
+    </div>
 
-	<!-- Grid de Métricas del Dashboard -->
-	<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.25rem;">
-		<StatsCard
-			title="Ventas de Hoy"
-			value="$0.00"
-			subtitle="0 transacciones registradas"
-			icon="💳"
-			color="#10b981"
-		/>
-		<StatsCard
-			title="Productos en Catálogo"
-			value="--"
-			subtitle="Conectado con Supabase DB"
-			icon="📦"
-			color="#6366f1"
-		/>
-		<StatsCard
-			title="Estado de API"
-			value="Activa"
-			subtitle="FastAPI backend responde OK"
-			icon="⚡"
-			color="#f59e0b"
-		/>
-	</div>
+    <!-- Grid de Métricas del Dashboard -->
+    <div class="dashboard-stats-grid">
+      <StatsCard
+        title="Ventas de Hoy"
+        value="$0.00"
+        subtitle="0 transacciones registradas"
+        icon="💳"
+      />
+      <StatsCard
+        title="Productos en Catálogo"
+        value="--"
+        subtitle="Conectado con Supabase DB"
+        icon="📦"
+      />
+      <StatsCard
+        title="Estado de API"
+        value="Activa"
+        subtitle="FastAPI backend responde OK"
+        icon="⚡"
+      />
+    </div>
 
-	<!-- Acciones Rápidas -->
-	<QuickActions />
+    <!-- Acciones Rápidas -->
+    <QuickActions />
+  </div>
 </Layout>

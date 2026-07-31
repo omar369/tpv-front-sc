@@ -1,81 +1,16 @@
 ---
 ---
 
-<div class="quick-actions">
-  <h3 class="quick-actions__title">Acciones Rápidas</h3>
-  <div class="quick-actions__grid">
+<div class="quick-actions-section">
+  <h3 class="quick-actions-title">Acciones Rápidas</h3>
+  <div class="quick-actions-grid">
     <a href="/productos/nuevo" class="action-card">
-      <div class="action-card__icon">📦</div>
-      <div class="action-card__info">
-        <span class="action-card__label">Subir nuevo producto</span>
-        <span class="action-card__desc">Buscar y agregar un producto al catálogo</span>
+      <div class="action-card-icon">📦</div>
+      <div class="action-card-info">
+        <span class="action-card-label">Subir nuevo producto</span>
+        <span class="action-card-desc">Buscar y agregar un producto al catálogo</span>
       </div>
-      <span class="action-card__arrow">→</span>
+      <span class="action-card-arrow">→</span>
     </a>
   </div>
 </div>
-
-<style>
-  .quick-actions {
-    margin-top: 2rem;
-    background-color: var(--bg-surface);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-lg);
-    padding: 1.5rem;
-  }
-
-  .quick-actions__title {
-    font-size: 1.1rem;
-    margin-bottom: 1rem;
-    color: var(--text-primary);
-  }
-
-  .quick-actions__grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 1rem;
-  }
-
-  .action-card {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    padding: 1rem;
-    background-color: var(--bg-primary);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-md);
-    text-decoration: none;
-    transition: background-color var(--transition-fast), border-color var(--transition-fast);
-  }
-
-  .action-card:hover {
-    background-color: var(--bg-surface-hover);
-    border-color: var(--accent-color);
-  }
-
-  .action-card__icon {
-    font-size: 1.5rem;
-  }
-
-  .action-card__info {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-  }
-
-  .action-card__label {
-    font-weight: 600;
-    font-size: 0.95rem;
-    color: var(--text-primary);
-  }
-
-  .action-card__desc {
-    font-size: 0.8rem;
-    color: var(--text-secondary);
-  }
-
-  .action-card__arrow {
-    color: var(--accent-color);
-    font-weight: bold;
-  }
-</style>
