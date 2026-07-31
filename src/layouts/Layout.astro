@@ -1,26 +1,28 @@
 ---
 import { pwaInfo } from 'virtual:pwa-info';
 import Sidebar from '../components/layout/Sidebar.astro';
+import '../styles/tokens.css';
 import '../styles/global.css';
 import '../styles/sidebar.css';
 
 export interface Props {
   title: string;
+  description?: string;
 }
 
-const { title } = Astro.props as Props;
+const { title, description = title } = Astro.props as Props;
 ---
-<html lang="es">
+<html lang="es" data-theme="light">
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="/favicon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/pwa-192x192.png">
-    <link rel="mask-icon" href="/favicon.svg" color="#FFFFFF">
-    <meta name="msapplication-TileColor" content="#0f172a">
-    <meta name="theme-color" content="#0f172a">
+    <link rel="mask-icon" href="/favicon.svg" color="#111111">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="theme-color" content="#ffffff">
+    <meta name="description" content={description}>
     <title>{title}</title>
-    <meta name="description" content={title}>
     { pwaInfo && <Fragment set:html={pwaInfo.webManifest.linkTag} /> }
   </head>
   <body>
@@ -31,5 +33,12 @@ const { title } = Astro.props as Props;
       </main>
     </div>
     <script src="/src/pwa.ts"></script>
+    <script>
+      // Restaurar tema guardado al cargar la página
+      const savedTheme = localStorage.getItem('pos-theme');
+      if (savedTheme) {
+        document.documentElement.setAttribute('data-theme', savedTheme);
+      }
+    </script>
   </body>
 </html>

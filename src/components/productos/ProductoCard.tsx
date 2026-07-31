@@ -1,55 +1,45 @@
 import React from 'react';
 import type { Producto } from '../../types';
 
-interface Props {
+interface ProductoCardProps {
   producto: Producto;
 }
 
-export const ProductoCard: React.FC<Props> = ({ producto }) => {
+export const ProductoCard: React.FC<ProductoCardProps> = ({ producto }) => {
   return (
     <div className="product-card">
-      <div className="product-card__img-container">
+      {/* Badge de estado — aparece en hover */}
+      <span
+        className={`product-card-badge ${
+          producto.activo ? 'product-card-badge--active' : 'product-card-badge--inactive'
+        }`}
+      >
+        {producto.activo ? 'Activo' : 'Inactivo'}
+      </span>
+
+      {/* Área de imagen — protagonista del card */}
+      <div className="product-card-image-area">
         {producto.imagen_url ? (
           <img
             src={producto.imagen_url}
             alt={producto.nombre}
-            className="product-card__img"
+            className="product-card-image"
             onError={(e) => {
-              (e.target as HTMLElement).style.display = 'none';
+              (e.currentTarget as HTMLImageElement).style.display = 'none';
             }}
           />
         ) : (
-          <div className="product-card__placeholder">
-            <span>📷</span>
+          <div className="product-card-placeholder">
+            <span className="product-card-placeholder-icon">📦</span>
             <span>Sin imagen</span>
           </div>
         )}
       </div>
-      <div className="product-card__body">
-        <div className="product-card__badge-row">
-          <span className="product-card__clave">#{producto.clave}</span>
-          <span className={producto.activo ? 'badge-active' : 'badge-inactive'}>
-            {producto.activo ? 'Activo' : 'Inactivo'}
-          </span>
-        </div>
-        <h4 className="product-card__title">{producto.nombre}</h4>
 
-        {(producto.marca || producto.modelo) && (
-          <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
-            {producto.marca && <strong>{producto.marca} </strong>}
-            {producto.modelo && <span>({producto.modelo})</span>}
-          </div>
-        )}
-
-        {producto.cantidad_unidad_medida && producto.unidad_medida && (
-          <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>
-            Contenido: {Number(producto.cantidad_unidad_medida)} {producto.unidad_medida}
-          </div>
-        )}
-
-        <div className="product-card__price">
-          ${Number(producto.precio).toFixed(2)}
-        </div>
+      {/* Franja inferior — visible en hover */}
+      <div className="product-card-footer">
+        <span className="product-card-name">{producto.nombre}</span>
+        <span className="product-card-price">${Number(producto.precio).toFixed(2)}</span>
       </div>
     </div>
   );

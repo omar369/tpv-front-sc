@@ -1,131 +1,341 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+/* ==============================================
+   GLOBAL.CSS — Base, reset, layout, tipografía,
+   botones y utilidades compartidas.
+   ============================================== */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
 
-:root {
-  --bg-primary: #0f172a;
-  --bg-surface: #1e293b;
-  --bg-surface-hover: #334155;
-  --bg-card: #1e293b;
-  --border-color: #334155;
-  --border-focus: #6366f1;
-
-  --text-primary: #f8fafc;
-  --text-secondary: #94a3b8;
-  --text-muted: #64748b;
-
-  --accent-color: #6366f1;
-  --accent-hover: #4f46e5;
-  --accent-light: rgba(99, 102, 241, 0.15);
-
-  --success-color: #10b981;
-  --success-bg: rgba(16, 185, 129, 0.15);
-  --warning-color: #f59e0b;
-  --warning-bg: rgba(245, 158, 11, 0.15);
-  --danger-color: #ef4444;
-  --danger-bg: rgba(239, 68, 68, 0.15);
-
-  --sidebar-width: 260px;
-  --radius-sm: 6px;
-  --radius-md: 10px;
-  --radius-lg: 16px;
-  --shadow-sm: 0 1px 3px rgba(0,0,0,0.3);
-  --shadow-md: 0 4px 12px rgba(0,0,0,0.4);
-  --shadow-lg: 0 10px 25px rgba(0,0,0,0.5);
-  --transition-fast: 0.15s ease;
-  --transition-normal: 0.25s ease;
-}
-
-* {
+/* ── Reset ── */
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
-body {
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  background-color: var(--bg-primary);
-  color: var(--text-primary);
-  line-height: 1.5;
-  min-height: 100vh;
-  -webkit-font-smoothing: antialiased;
+/* ── Base HTML/Body ── */
+html {
+  scroll-behavior: smooth;
 }
 
-/* Shell Layout */
+body {
+  font-family: 'Outfit', system-ui, -apple-system, sans-serif;
+  background-color: var(--color-bg);
+  color: var(--color-text-primary);
+  line-height: 1.55;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color var(--transition-normal), color var(--transition-normal);
+}
+
+/* ── Headings ── */
+h1, h2, h3, h4, h5 {
+  font-weight: 700;
+  color: var(--color-text-primary);
+  line-height: 1.2;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img, video {
+  display: block;
+  max-width: 100%;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+input, textarea, select {
+  font-family: inherit;
+}
+
+/* ── App Shell Layout ── */
 .app-shell {
   display: flex;
   min-height: 100vh;
   width: 100%;
 }
 
+/* Área de contenido principal — desplazada por el sidebar en desktop */
 .app-content {
   flex: 1;
   margin-left: var(--sidebar-width);
-  padding: 2rem;
-  max-width: calc(100vw - var(--sidebar-width));
+  padding: var(--space-xl);
+  min-height: 100vh;
   overflow-x: hidden;
+  background-color: var(--color-bg);
+  transition: background-color var(--transition-normal);
 }
 
 @media (max-width: 768px) {
   .app-content {
     margin-left: 0;
-    max-width: 100vw;
-    padding: 1rem;
-    padding-top: 4.5rem;
+    padding: var(--space-md);
+    padding-top: calc(var(--mobile-header-height) + var(--space-md));
   }
 }
 
-/* Headings & Text */
-h1, h2, h3, h4 {
-  font-weight: 600;
-  color: var(--text-primary);
-}
-
+/* ── Tipografía de página ── */
 .page-title {
-  font-size: 1.75rem;
-  margin-bottom: 0.5rem;
+  font-size: var(--text-2xl);
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-xs);
+  letter-spacing: -0.02em;
 }
 
 .page-subtitle {
-  color: var(--text-secondary);
-  font-size: 0.95rem;
-  margin-bottom: 1.5rem;
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-lg);
 }
 
-/* Buttons */
+/* ── Botón primario ── */
 .btn-primary {
-  background-color: var(--accent-color);
-  color: #fff;
-  border: none;
-  padding: 0.65rem 1.25rem;
-  border-radius: var(--radius-md);
-  font-weight: 500;
-  font-size: 0.9rem;
-  cursor: pointer;
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  transition: background-color var(--transition-fast);
+  gap: var(--space-sm);
+  padding: 0.6rem 1.25rem;
+  background-color: var(--color-accent);
+  color: var(--color-sidebar-active-txt);
+  border: 2px solid var(--color-accent);
+  border-radius: var(--radius-pill);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  font-family: inherit;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  white-space: nowrap;
+  transition:
+    background-color var(--transition-fast),
+    border-color var(--transition-fast),
+    transform var(--transition-fast),
+    box-shadow var(--transition-fast);
 }
 
 .btn-primary:hover {
-  background-color: var(--accent-hover);
+  background-color: var(--color-accent-hover);
+  border-color: var(--color-accent-hover);
+  transform: translateY(-1px);
+  box-shadow: var(--color-shadow-md);
 }
 
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ── Botón secundario ── */
 .btn-secondary {
-  background-color: var(--bg-surface-hover);
-  color: var(--text-primary);
-  border: 1px solid var(--border-color);
-  padding: 0.65rem 1.25rem;
-  border-radius: var(--radius-md);
-  font-weight: 500;
-  font-size: 0.9rem;
-  cursor: pointer;
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  transition: border-color var(--transition-fast), background-color var(--transition-fast);
+  gap: var(--space-sm);
+  padding: 0.6rem 1.25rem;
+  background-color: transparent;
+  color: var(--color-text-secondary);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  white-space: nowrap;
+  transition:
+    border-color var(--transition-fast),
+    color var(--transition-fast),
+    background-color var(--transition-fast);
 }
 
 .btn-secondary:hover {
-  border-color: var(--text-secondary);
-  background-color: #475569;
+  border-color: var(--color-text-primary);
+  color: var(--color-text-primary);
+  background-color: var(--color-surface);
+}
+
+.btn-secondary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ── Botón de ícono (cuadrado, solo ícono) ── */
+.btn-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background-color: transparent;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-md);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.btn-icon:hover {
+  background-color: var(--color-surface);
+  color: var(--color-text-primary);
+  border-color: var(--color-text-primary);
+}
+
+/* ── Separador ── */
+.divider {
+  width: 100%;
+  height: 1px;
+  background-color: var(--color-border);
+  margin: var(--space-lg) 0;
+}
+
+/* ── Badges de estado ── */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.15rem 0.55rem;
+  border-radius: var(--radius-pill);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: 0.03em;
+}
+
+.badge-success {
+  background-color: var(--color-success-bg);
+  color: var(--color-success);
+}
+
+.badge-danger {
+  background-color: var(--color-danger-bg);
+  color: var(--color-danger);
+}
+
+.badge-warning {
+  background-color: var(--color-warning-bg);
+  color: var(--color-warning);
+}
+
+/* ── Alert / Banner de alerta ── */
+.alert-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-sm);
+  padding: var(--space-md);
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  border: 1px solid transparent;
+}
+
+.alert-banner--warning {
+  background-color: var(--color-warning-bg);
+  border-color: var(--color-warning);
+  color: var(--color-warning);
+}
+
+.alert-banner--danger {
+  background-color: var(--color-danger-bg);
+  border-color: var(--color-danger);
+  color: var(--color-danger);
+}
+
+.alert-banner--success {
+  background-color: var(--color-success-bg);
+  border-color: var(--color-success);
+  color: var(--color-success);
+}
+
+/* ── Campos de formulario compartidos ── */
+.field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.field-label {
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--color-text-secondary);
+}
+
+.field-required {
+  color: var(--color-danger);
+  margin-left: 2px;
+}
+
+.field-input,
+.field-select,
+.field-textarea {
+  width: 100%;
+  padding: 0.7rem 0.9rem;
+  background-color: var(--color-input-bg);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-md);
+  color: var(--color-text-primary);
+  font-size: var(--text-base);
+  font-family: inherit;
+  outline: none;
+  min-height: 44px;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.field-input:focus,
+.field-select:focus,
+.field-textarea:focus {
+  border-color: var(--color-border-focus);
+  box-shadow: 0 0 0 3px var(--color-accent-light);
+}
+
+.field-input::placeholder,
+.field-textarea::placeholder {
+  color: var(--color-text-muted);
+}
+
+.field-textarea {
+  resize: vertical;
+  min-height: 90px;
+}
+
+/* ── Spinner de carga ── */
+.loading-state {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  padding: var(--space-2xl) 0;
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+}
+
+/* ── Estado vacío ── */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-2xl) var(--space-lg);
+  text-align: center;
+  gap: var(--space-md);
+  background-color: var(--color-surface);
+  border-radius: var(--radius-lg);
+  border: 1.5px dashed var(--color-border);
+}
+
+.empty-state-title {
+  font-size: var(--text-base);
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.empty-state-desc {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  max-width: 300px;
 }

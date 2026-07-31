@@ -1,0 +1,131 @@
+/* ==============================================
+   LOGIN.CSS — Página de inicio de sesión.
+   Centrada, minimalista, sin sidebar.
+   ============================================== */
+
+/* Body específico del login (sobreescribe global) */
+.login-page-body {
+  background-color: var(--color-bg);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-lg);
+}
+
+/* ── Tarjeta de login centrada ── */
+.login-card {
+  width: 100%;
+  max-width: 400px;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-2xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  box-shadow: var(--color-shadow-md);
+}
+
+/* ── Header de la card: logo + título ── */
+.login-card-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-md);
+  text-align: center;
+}
+
+.login-logo {
+  width: 52px;
+  height: 52px;
+  background-color: var(--color-accent);
+  color: var(--color-sidebar-active-txt);
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--text-lg);
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+
+.login-title {
+  font-size: var(--text-2xl);
+  font-weight: 700;
+  color: var(--color-text-primary);
+  letter-spacing: -0.02em;
+}
+
+.login-subtitle {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  margin-top: -var(--space-xs);
+}
+
+/* ── Banner de error de login ── */
+.login-error-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  background-color: var(--color-danger-bg);
+  border: 1px solid var(--color-danger);
+  border-radius: var(--radius-md);
+  color: var(--color-danger);
+  font-size: var(--text-sm);
+}
+
+/* ── Formulario de login ── */
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.login-field-label {
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-xs);
+  display: block;
+}
+
+.login-field-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background-color: var(--color-input-bg);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-md);
+  color: var(--color-text-primary);
+  font-size: var(--text-base);
+  font-family: inherit;
+  outline: none;
+  min-height: 46px;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.login-field-input:focus {
+  border-color: var(--color-border-focus);
+  box-shadow: 0 0 0 3px var(--color-accent-light);
+}
+
+.login-field-input::placeholder {
+  color: var(--color-text-muted);
+}
+
+/* Botón de submit — full width */
+.login-submit-btn {
+  width: 100%;
+  justify-content: center;
+  padding: 0.8rem 1.25rem;
+  font-size: var(--text-base);
+  margin-top: var(--space-xs);
+}
+
+@media (max-width: 480px) {
+  .login-card {
+    padding: var(--space-lg);
+    border-radius: var(--radius-lg);
+  }
+}

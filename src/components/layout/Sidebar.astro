@@ -1,117 +1,184 @@
 ---
 const pathname = Astro.url.pathname;
 
-const isProductosActive = pathname.startsWith('/productos');
+const isProductosActive     = pathname.startsWith('/productos');
 const isNuevoProductoActive = pathname === '/productos/nuevo';
+const isDashboardActive     = pathname === '/';
 ---
 
-<!-- Mobile Header Bar with Hamburger Toggle -->
-<div class="mobile-header">
-  <div style="display: flex; align-items: center; gap: 0.75rem;">
-    <button id="mobile-menu-toggle" type="button" aria-label="Abrir menú" style="background: transparent; border: none; color: var(--text-primary); font-size: 1.5rem; cursor: pointer; display: flex; align-items: center;">
+<!-- ── Mobile: Barra superior fija ── -->
+<div class="mobile-topbar">
+  <div class="mobile-topbar-left">
+    <button id="mobile-menu-toggle" type="button" aria-label="Abrir menú" class="mobile-hamburger-btn">
       ☰
     </button>
-    <div class="sidebar__logo-icon" style="width: 30px; height: 30px; font-size: 0.85rem;">POS</div>
-    <span class="sidebar__title" style="font-size: 1rem;">Terminal POS</span>
+    <div class="mobile-topbar-logo">POS</div>
+    <span class="mobile-topbar-title">Terminal POS</span>
   </div>
 </div>
 
-<!-- Mobile Backdrop Overlay -->
+<!-- ── Overlay mobile ── -->
 <div id="sidebar-overlay" class="sidebar-overlay"></div>
 
-<!-- Sidebar Navigation Component -->
+<!-- ── Sidebar principal ── -->
 <aside id="app-sidebar" class="sidebar">
-  <div class="sidebar__header">
-    <div class="sidebar__logo-icon">POS</div>
-    <span class="sidebar__title">Terminal POS</span>
+
+  <!-- Header con logo y nombre -->
+  <div class="sidebar-header">
+    <div class="sidebar-header-logo">POS</div>
+    <span class="sidebar-header-title">Terminal POS</span>
   </div>
 
-  <nav class="sidebar__nav">
-    <div class="sidebar__section">
-      <div class="sidebar__section-label">General</div>
-      <a href="/" class={`sidebar__nav-item ${pathname === '/' ? 'active' : ''}`}>
-        <span class="sidebar__nav-item-icon">📊</span>
-        <span>Dashboard</span>
-      </a>
-    </div>
+  <!-- Navegación -->
+  <nav class="sidebar-nav">
+    <span class="sidebar-section-label">General</span>
 
-    <div class="sidebar__section">
-      <div class="sidebar__section-label">Inventario</div>
-      <a href="/productos/nuevo" class={`sidebar__nav-item ${isProductosActive ? 'active' : ''}`}>
-        <span class="sidebar__nav-item-icon">📦</span>
-        <span>Productos</span>
+    <a href="/" class={`sidebar-nav-item ${isDashboardActive ? 'sidebar-nav-item--active' : ''}`}>
+      <span class="sidebar-nav-item-icon">📊</span>
+      <span class="sidebar-nav-item-label">Dashboard</span>
+    </a>
+
+    <span class="sidebar-section-label">Inventario</span>
+
+    <a href="/productos/nuevo" class={`sidebar-nav-item ${isProductosActive ? 'sidebar-nav-item--active' : ''}`}>
+      <span class="sidebar-nav-item-icon">📦</span>
+      <span class="sidebar-nav-item-label">Productos</span>
+    </a>
+
+    <div class="sidebar-subnav">
+      <a href="/productos/nuevo" class={`sidebar-subnav-item ${isNuevoProductoActive ? 'sidebar-subnav-item--active' : ''}`}>
+        ➕ Nuevo producto
       </a>
-      
-      <div class="sidebar__subnav">
-        <a href="/productos/nuevo" class={`sidebar__subnav-item ${isNuevoProductoActive ? 'active' : ''}`}>
-          ➕ Subir nuevo producto
-        </a>
-      </div>
     </div>
   </nav>
 
-  <!-- User Profile & Logout Section -->
-  <div style="padding: 1rem; border-top: 1px solid var(--border-color); background-color: var(--bg-primary);">
-    <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem;">
-      <div style="display: flex; flex-direction: column; overflow: hidden;">
-        <span id="user-display-name" style="font-weight: 600; font-size: 0.85rem; color: var(--text-primary); text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">
-          Admin POS
-        </span>
-        <span id="user-display-role" style="font-size: 0.75rem; color: var(--accent-color); font-weight: 500;">
-          Rol: Administrador
-        </span>
+  <!-- Footer: selector de tema + usuario + logout -->
+  <div class="sidebar-footer">
+
+    <!-- Selector de tema -->
+    <div class="sidebar-theme-picker">
+      <span class="sidebar-theme-picker-label">Tema</span>
+      <div class="sidebar-theme-dots">
+        <button
+          type="button"
+          class="sidebar-theme-dot"
+          data-dot="light"
+          data-theme-value="light"
+          aria-label="Tema claro"
+          title="Claro"
+        ></button>
+        <button
+          type="button"
+          class="sidebar-theme-dot"
+          data-dot="night"
+          data-theme-value="night"
+          aria-label="Tema oscuro"
+          title="Noche"
+        ></button>
+        <button
+          type="button"
+          class="sidebar-theme-dot"
+          data-dot="warm"
+          data-theme-value="warm"
+          aria-label="Tema cálido"
+          title="Cálido"
+        ></button>
+        <button
+          type="button"
+          class="sidebar-theme-dot"
+          data-dot="forest"
+          data-theme-value="forest"
+          aria-label="Tema bosque"
+          title="Bosque"
+        ></button>
+      </div>
+    </div>
+
+    <!-- Usuario + logout -->
+    <div class="sidebar-user-row">
+      <div class="sidebar-user-avatar" id="user-avatar-initials">A</div>
+      <div class="sidebar-user-info">
+        <span class="sidebar-user-name" id="user-display-name">Admin POS</span>
+        <span class="sidebar-user-role" id="user-display-role">Administrador</span>
       </div>
       <button
         id="btn-logout"
         type="button"
         title="Cerrar Sesión"
-        style="background: transparent; border: 1px solid var(--border-color); color: var(--text-secondary); padding: 0.35rem 0.6rem; border-radius: var(--radius-sm); cursor: pointer; font-size: 0.8rem; transition: background var(--transition-fast);"
-        onmouseover="this.style.backgroundColor='rgba(239,68,68,0.15)'; this.style.borderColor='#ef4444'; this.style.color='#fca5a5';"
-        onmouseout="this.style.backgroundColor='transparent'; this.style.borderColor='var(--border-color)'; this.style.color='var(--text-secondary)';"
+        class="sidebar-logout-btn"
       >
         🚪
       </button>
     </div>
+
   </div>
 </aside>
 
 <script>
   import { getLocalSession, logoutUser } from '../../services/auth';
 
-  // Mobile Drawer Toggle Logic
-  const toggleBtn = document.getElementById('mobile-menu-toggle');
-  const sidebar = document.getElementById('app-sidebar');
-  const overlay = document.getElementById('sidebar-overlay');
+  // ── Mobile Drawer ──
+  const toggleBtn  = document.getElementById('mobile-menu-toggle');
+  const sidebar    = document.getElementById('app-sidebar');
+  const overlay    = document.getElementById('sidebar-overlay');
 
-  function openMenu() {
-    sidebar?.classList.add('open');
-    overlay?.classList.add('active');
+  function openMenu()  {
+    sidebar?.classList.add('sidebar--open');
+    overlay?.classList.add('sidebar-overlay--visible');
   }
 
   function closeMenu() {
-    sidebar?.classList.remove('open');
-    overlay?.classList.remove('active');
+    sidebar?.classList.remove('sidebar--open');
+    overlay?.classList.remove('sidebar-overlay--visible');
   }
 
   toggleBtn?.addEventListener('click', () => {
-    if (sidebar?.classList.contains('open')) {
-      closeMenu();
-    } else {
-      openMenu();
-    }
+    sidebar?.classList.contains('sidebar--open') ? closeMenu() : openMenu();
   });
 
   overlay?.addEventListener('click', closeMenu);
 
-  // User session check
-  const session = getLocalSession();
-  const nameEl = document.getElementById('user-display-name');
-  const roleEl = document.getElementById('user-display-role');
-  const logoutBtn = document.getElementById('btn-logout');
+  // ── Selector de tema ──
+  const themeDots = document.querySelectorAll<HTMLButtonElement>('[data-theme-value]');
+  const htmlEl    = document.documentElement;
 
-  if (session && session.user) {
-    if (nameEl) nameEl.textContent = session.user.user_metadata?.nombre || session.user.email || 'Admin POS';
-    if (roleEl) roleEl.textContent = `Rol: ${session.user.user_metadata?.rol || 'admin'}`;
+  function applyTheme(theme: string) {
+    htmlEl.setAttribute('data-theme', theme);
+    localStorage.setItem('pos-theme', theme);
+
+    // Actualizar dot activo
+    themeDots.forEach(dot => {
+      dot.classList.toggle('sidebar-theme-dot--active', dot.dataset.themeValue === theme);
+    });
+  }
+
+  // Restaurar tema guardado
+  const savedTheme = localStorage.getItem('pos-theme') || 'light';
+  applyTheme(savedTheme);
+
+  // Asignar click a cada dot
+  themeDots.forEach(dot => {
+    dot.addEventListener('click', () => {
+      const theme = dot.dataset.themeValue;
+      if (theme) applyTheme(theme);
+    });
+  });
+
+  // ── Sesión de usuario ──
+  const session       = getLocalSession();
+  const nameEl        = document.getElementById('user-display-name');
+  const roleEl        = document.getElementById('user-display-role');
+  const avatarEl      = document.getElementById('user-avatar-initials');
+  const logoutBtn     = document.getElementById('btn-logout');
+
+  if (session?.user) {
+    const nombre  = session.user.user_metadata?.nombre || session.user.email || 'Admin';
+    const rol     = session.user.user_metadata?.rol || 'admin';
+    const initials = nombre.charAt(0).toUpperCase();
+
+    if (nameEl)   nameEl.textContent   = nombre;
+    if (roleEl)   roleEl.textContent   = rol.charAt(0).toUpperCase() + rol.slice(1);
+    if (avatarEl) avatarEl.textContent = initials;
   } else {
     if (window.location.pathname !== '/login') {
       window.location.href = '/login';

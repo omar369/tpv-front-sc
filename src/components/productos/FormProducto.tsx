@@ -95,26 +95,26 @@ export const FormProducto: React.FC<Props> = ({ onBack, onSuccess, existingClave
   };
 
   return (
-    <div className="phase-card">
+    <div className="phase-card" style={{ marginTop: '1rem' }}>
       <div className="phase-header">
         <div className="phase-title-group">
           <h3 className="phase-title">Crear Nuevo Producto</h3>
-          <p className="phase-desc">Completa los campos detallados para registrar el producto en el catálogo</p>
+          <p className="phase-description">Completa los campos detallados para registrar el producto en el catálogo</p>
         </div>
         <button type="button" onClick={onBack} className="btn-secondary">
-          ← Volver a Búsqueda
+          ← Volver
         </button>
       </div>
 
       {error && (
-        <div className="duplicate-alert" style={{ backgroundColor: 'rgba(239, 68, 68, 0.15)', borderColor: '#ef4444', color: '#fca5a5' }}>
-          <span className="duplicate-alert-icon">⚠️</span>
+        <div className="alert-banner alert-banner--danger">
+          <span>⚠️</span>
           <div>{error}</div>
         </div>
       )}
 
       <form onSubmit={handleSubmit} className="form-grid">
-        <div className="form-fields">
+        <div className="form-fields-column">
           {/* Fila 1: Claves */}
           <div className="form-row">
             <div className="field-group">
@@ -296,9 +296,9 @@ export const FormProducto: React.FC<Props> = ({ onBack, onSuccess, existingClave
           </div>
         </div>
 
-        <div>
+        <div className="form-image-column">
           <div className="field-group">
-            <label>Imagen del Producto</label>
+            <label className="field-label">Imagen del Producto</label>
             <label className="image-dropzone">
               <input
                 type="file"
@@ -307,10 +307,10 @@ export const FormProducto: React.FC<Props> = ({ onBack, onSuccess, existingClave
                 style={{ display: 'none' }}
               />
               {previewUrl ? (
-                <img src={previewUrl} alt="Preview" className="dropzone-preview" />
+                <img src={previewUrl} alt="Vista previa" className="dropzone-preview-image" />
               ) : (
                 <>
-                  <span style={{ fontSize: '2rem' }}>🖼️</span>
+                  <span className="dropzone-icon">🖼️</span>
                   <span className="dropzone-text">Haz clic o arrastra una imagen aquí</span>
                   <span className="dropzone-hint">Soporta PNG, JPG o WEBP</span>
                 </>
@@ -325,7 +325,7 @@ export const FormProducto: React.FC<Props> = ({ onBack, onSuccess, existingClave
           Cancelar
         </button>
         <button type="button" onClick={handleSubmit} className="btn-primary" disabled={loading}>
-          {loading ? 'Subiendo Producto...' : '💾 Guardar Producto'}
+          {loading ? 'Guardando...' : '💾 Guardar Producto'}
         </button>
       </div>
     </div>
